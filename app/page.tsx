@@ -4,16 +4,13 @@ import { cn } from "@/lib/cn";
 export default function Home() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-20">
-      <div className="text-xs font-mono uppercase tracking-wider text-primary">
-        System Design Visual
-      </div>
-      <h1 className="mt-3 text-5xl font-bold tracking-tight leading-[1.05]">
-        Learn system design by{" "}
-        <span className="text-primary">watching it work.</span>
+      <h1 className="text-5xl font-bold tracking-tight leading-[1.05]">
+        Every webpage starts with{" "}
+        <span className="text-primary">a hello.</span>
       </h1>
       <p className="mt-6 text-lg text-foreground/80 max-w-xl leading-relaxed">
-        Interactive, animated lessons built for absolute beginners. Hover any
-        underlined term to see what it means — no jargon left behind.
+        Animated, beginner-first lessons in system design. Hover any underlined
+        term to see what it means — no jargon left behind.
       </p>
 
       <div className="mt-10">

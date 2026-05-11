@@ -1,18 +1,10 @@
-import Link from "next/link";
 import { Term } from "@/components/glossary/Term";
 import { RequestJourneyDemo } from "@/components/sim/RequestJourneyDemo";
 
 export default function RequestJourneyPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
-      <Link
-        href="/"
-        className="text-xs text-muted hover:text-foreground transition"
-      >
-        ← Back home
-      </Link>
-
-      <p className="mt-6 font-mono text-[11px] uppercase tracking-wider text-muted">
+      <p className="font-mono text-[11px] uppercase tracking-wider text-muted">
         Lesson 1
       </p>
       <h1 className="mt-2 text-4xl font-bold tracking-tight leading-tight">

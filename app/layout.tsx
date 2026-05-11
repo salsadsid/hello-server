@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SiteHeader } from "@/components/SiteHeader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "System Design Visual — Learn by Watching",
+  title: "Hello, Server — Learn how the internet talks",
   description:
-    "Interactive, animated lessons in system design for absolute beginners. Every term is explorable.",
+    "Animated, beginner-first lessons in system design. Every concept explained with interactive simulations and recursively-clickable glossary terms.",
 };
 
 export default function RootLayout({
@@ -28,7 +29,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <SiteHeader />
+        {children}
+      </body>
     </html>
   );
 }
