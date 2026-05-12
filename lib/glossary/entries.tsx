@@ -127,16 +127,68 @@ export const entries: GlossaryRegistry = {
   latency: {
     name: "latency",
     label: "latency",
-    short: "How long it takes for a message to travel one way.",
+    short: "How long one request takes to finish — your personal wait.",
     body: (
       <>
         Latency is the wait — how many milliseconds pass between sending a{" "}
-        <Term name="request">request</Term> and the first byte of the{" "}
-        <Term name="response">response</Term> coming back. Distance, congestion, and
-        the speed of the <Term name="server">server</Term> all add to it. Low
-        latency means snappy; high latency means laggy.
+        <Term name="request">request</Term> and getting the{" "}
+        <Term name="response">response</Term> back. It&apos;s a measure from{" "}
+        <em>one</em> request&apos;s point of view. Distance, congestion, and how
+        long the <Term name="server">server</Term> takes to do the work all add
+        to it. Low latency means snappy; high latency means laggy. Latency is
+        often confused with <Term name="throughput">throughput</Term>, but
+        they&apos;re different numbers.
       </>
     ),
-    related: ["request", "response"],
+    related: ["throughput", "request", "response"],
+  },
+  throughput: {
+    name: "throughput",
+    label: "throughput",
+    short: "How many requests a system finishes per second.",
+    body: (
+      <>
+        Throughput is how much work a system gets through over time — drinks per
+        minute, <Term name="request">requests</Term> per second, packages per
+        hour. It&apos;s a measure of the system&apos;s output, not any single
+        request. A system can have high throughput <em>and</em> high{" "}
+        <Term name="latency">latency</Term> (a giant cargo ship), or low
+        throughput and low latency (an artisan making one perfect coffee). When
+        someone says &quot;fast,&quot; always ask which one they mean.
+      </>
+    ),
+    related: ["latency", "parallel"],
+  },
+  parallel: {
+    name: "parallel",
+    label: "parallel",
+    short: "Doing many things at the same time, instead of one after another.",
+    body: (
+      <>
+        When work happens in parallel, several tasks run side by side. Four
+        baristas in parallel finish four drinks in the time one barista
+        finishes one. Parallelism is how systems get high{" "}
+        <Term name="throughput">throughput</Term> without making each
+        individual task any faster — each drink still takes the same time, but
+        more drinks can be in progress at once.
+      </>
+    ),
+    related: ["throughput", "server"],
+  },
+  queue: {
+    name: "queue",
+    label: "queue",
+    short: "A line of waiting work, handled in the order it arrived.",
+    body: (
+      <>
+        When more <Term name="request">requests</Term> show up than a{" "}
+        <Term name="server">server</Term> can handle right now, the extras wait
+        in line — a queue. The longer the queue, the longer each new request
+        waits before it&apos;s even picked up. Queues are why a system&apos;s{" "}
+        <Term name="latency">latency</Term> can get worse even when each
+        request, on its own, would still be fast.
+      </>
+    ),
+    related: ["latency", "throughput"],
   },
 };

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Term } from "@/components/glossary/Term";
 import { RequestJourneyDemo } from "@/components/sim/RequestJourneyDemo";
 
@@ -11,11 +12,11 @@ export default function RequestJourneyPage() {
         The journey of one request
       </h1>
       <p className="mt-5 text-lg text-foreground/80 leading-relaxed">
-        Every website you&apos;ve ever visited starts with one tiny conversation:
-        your <Term name="browser">browser</Term> asks a{" "}
-        <Term name="server">server</Term> for a page, and the server sends one
-        back. That&apos;s it. The rest of system design is just variations on
-        this picture.
+        Every website you&apos;ve ever visited — including this one — starts
+        with one tiny conversation: your <Term name="browser">browser</Term>{" "}
+        asks a <Term name="server">server</Term> for a page, and the server
+        sends one back. That&apos;s it. The rest of system design is just
+        variations on this picture.
       </p>
 
       <div className="my-10">
@@ -42,11 +43,13 @@ export default function RequestJourneyPage() {
             <code className="px-1 py-0.5 rounded bg-foreground/5 font-mono text-sm">
               google.com
             </code>{" "}
-            into your browser. But computers don&apos;t actually understand names
-            like &quot;google.com&quot; — they only know numbers called{" "}
-            <Term name="ip-address">IP addresses</Term>. So the first thing the
-            browser does is ask <Term name="dns">DNS</Term> — the internet&apos;s
-            phonebook — for the correct number.
+            and hit enter. But here&apos;s the catch: your computer has no idea
+            where google.com actually <em>lives</em>. Names like
+            &quot;google.com&quot; are for humans — computers only speak in
+            numbers called <Term name="ip-address">IP addresses</Term>. So
+            before anything else, the browser asks{" "}
+            <Term name="dns">DNS</Term> — the internet&apos;s phonebook —
+            &ldquo;what number is google.com at?&rdquo;
           </p>
         </section>
 
@@ -74,9 +77,10 @@ export default function RequestJourneyPage() {
           <h2 className="text-xl font-semibold mt-6">Step 4 — The browser draws it</h2>
           <p className="mt-3">
             Your browser receives the HTML and paints it onto the screen as the
-            page you see. The whole round-trip might take only ~100 milliseconds
-            of <Term name="latency">latency</Term> — but every single one of
-            those four steps had to happen, in order.
+            page you see — exactly how this page got painted onto yours. The
+            whole round-trip might take only ~100 milliseconds of{" "}
+            <Term name="latency">latency</Term> — faster than you can blink.
+            But every single one of those four steps had to happen, in order.
           </p>
         </section>
 
@@ -93,7 +97,10 @@ export default function RequestJourneyPage() {
           </p>
         </div>
 
-        <div className="mt-10 flex items-center justify-between rounded-xl border border-dashed border-border p-4">
+        <Link
+          href="/concepts/latency-throughput"
+          className="mt-10 flex items-center justify-between rounded-xl border border-dashed border-border p-4 hover:border-primary/60 hover:bg-primary/[0.03] transition"
+        >
           <div>
             <div className="font-mono text-[10px] uppercase tracking-wider text-muted">
               Up next
@@ -102,8 +109,8 @@ export default function RequestJourneyPage() {
               Lesson 2 — Latency &amp; throughput
             </div>
           </div>
-          <span className="text-xs text-muted">coming soon</span>
-        </div>
+          <span className="text-xs text-primary">available →</span>
+        </Link>
       </div>
     </main>
   );

@@ -1,31 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Scene } from "./Scene";
-import { Controls } from "./Controls";
-import { KeyboardHints, type Shortcut } from "./KeyboardHints";
-import { DemoHeader } from "./DemoHeader";
-import { useJourney } from "./journeyStore";
+import { useCafe, CAFE_ORDER } from "./cafeStore";
+import { Cafe } from "./Cafe";
+import { CafeControls } from "./CafeControls";
+import { KeyboardHints, type Shortcut } from "../KeyboardHints";
+import { DemoHeader } from "../DemoHeader";
 import { cn } from "@/lib/cn";
 
 const SHORTCUTS: Shortcut[] = [
   { keys: "Space", label: "Play / pause" },
   { keys: "R", label: "Reset" },
-  { keys: "→", label: "Step" },
   { keys: "1 / 2 / 3", label: "Speed" },
   { keys: "F", label: "Fullscreen" },
 ];
 
 const SKIP_TAGS = new Set(["INPUT", "TEXTAREA", "SELECT"]);
 
-export function RequestJourneyDemo() {
+export function CafeDemo() {
   const [expanded, setExpanded] = useState(false);
-  const isPlaying = useJourney((s) => s.isPlaying);
-  const play = useJourney((s) => s.play);
-  const pause = useJourney((s) => s.pause);
-  const reset = useJourney((s) => s.reset);
-  const step = useJourney((s) => s.step);
-  const setSpeed = useJourney((s) => s.setSpeed);
+  const tick = useCafe((s) => s.tick);
+  const isPlaying = useCafe((s) => s.isPlaying);
+
+  useEffect(() => {
+    if (!isPlaying) return;
+    let raf = 0;
+    let last = performance.now();
+    const loop = (now: number) => {
+      const dt = Math.min(80, now - last);
+      last = now;
+      tick(dt);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [isPlaying, tick]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -33,59 +42,49 @@ export function RequestJourneyDemo() {
       const target = e.target as HTMLElement | null;
       if (target?.isContentEditable) return;
       if (target && SKIP_TAGS.has(target.tagName)) return;
+      const tag = target?.tagName;
+      const store = useCafe.getState();
 
       switch (e.key) {
         case " ":
-        case "k": {
-          if (target?.tagName === "BUTTON" || target?.tagName === "A") return;
+        case "k":
+        case "K":
+          if (tag === "BUTTON" || tag === "A") return;
           e.preventDefault();
-          if (isPlaying) pause();
-          else play();
+          store.isPlaying ? store.pause() : store.play();
           break;
-        }
         case "r":
-        case "R": {
-          if (target?.tagName === "BUTTON" || target?.tagName === "A") return;
+        case "R":
+          if (tag === "BUTTON" || tag === "A") return;
           e.preventDefault();
-          reset();
+          store.reset();
           break;
-        }
-        case "n":
-        case "N":
-        case "ArrowRight": {
-          if (target?.tagName === "BUTTON" || target?.tagName === "A") return;
-          e.preventDefault();
-          step();
-          break;
-        }
         case "1":
-          setSpeed(0.5);
+          store.setSpeed(0.5);
           break;
         case "2":
-          setSpeed(1);
+          store.setSpeed(1);
           break;
         case "3":
-          setSpeed(2);
+          store.setSpeed(2);
           break;
         case "f":
-        case "F": {
-          if (target?.tagName === "BUTTON" || target?.tagName === "A") return;
+        case "F":
+          if (tag === "BUTTON" || tag === "A") return;
           e.preventDefault();
           setExpanded((v) => !v);
           break;
-        }
-        case "Escape": {
+        case "Escape":
           if (expanded) {
             e.preventDefault();
             setExpanded(false);
           }
           break;
-        }
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [isPlaying, play, pause, reset, step, setSpeed, expanded]);
+  }, [expanded]);
 
   useEffect(() => {
     if (!expanded) return;
@@ -101,19 +100,26 @@ export function RequestJourneyDemo() {
       className={cn(
         "w-full",
         expanded &&
-          "fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm p-4 sm:p-8"
+          "fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm p-4 sm:p-8 overflow-auto"
       )}
     >
       <div
         className={cn("space-y-4", expanded ? "w-full max-w-5xl" : "w-full")}
       >
         <DemoHeader
-          label="Lesson 1 · Demo"
+          label="Lesson 2 · Demo"
+          tagline="Same arrivals · three different kitchens"
           expanded={expanded}
           onToggle={() => setExpanded((v) => !v)}
         />
-        <Scene expanded={expanded} />
-        <Controls />
+        <div className="rounded-2xl border border-border bg-gradient-to-br from-surface to-background p-3 sm:p-4">
+          <div className="space-y-3">
+            {CAFE_ORDER.map((id) => (
+              <Cafe key={id} id={id} />
+            ))}
+          </div>
+        </div>
+        <CafeControls />
         <KeyboardHints shortcuts={SHORTCUTS} />
       </div>
     </div>

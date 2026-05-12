@@ -38,7 +38,8 @@ export default function Home() {
             num="2"
             title="Latency & throughput"
             blurb="The two numbers that decide if your site feels fast."
-            status="coming"
+            status="ready"
+            href="/concepts/latency-throughput"
           />
           <LessonCard
             num="3"
